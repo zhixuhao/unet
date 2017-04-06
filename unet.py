@@ -5,6 +5,18 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 from data import dataProcess
+from keras import backend as K
+
+def dice_coef(y_true, y_pred):
+	smooth = 1.
+	y_true_f = K.flatten(y_true)
+	y_pred_f = K.flatten(y_pred)
+	intersection = K.sum(y_true_f * y_pred_f)
+	return (2. * intersection + smooth) / (K.sum(y_true_f*y_true_f) + K.sum(y_pred_f*y_pred_f) + smooth)
+
+
+def dice_coef_loss(y_true, y_pred):
+	return 1.-dice_coef(y_true, y_pred)
 
 class myUnet(object):
 
@@ -19,6 +31,8 @@ class myUnet(object):
 		imgs_train, imgs_mask_train = mydata.load_train_data()
 		imgs_test = mydata.load_test_data()
 		return imgs_train, imgs_mask_train, imgs_test
+
+	
 
 	def get_unet(self):
 
@@ -140,7 +154,7 @@ class myUnet(object):
 
 		model = Model(input = inputs, output = conv10)
 
-		model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
+		model.compile(optimizer = Adam(lr = 1e-4), loss=dice_coef_loss, metrics=[dice_coef])
 
 		return model
 
@@ -191,7 +205,7 @@ class myUnet(object):
 		print("loading data")
 		imgs_train, imgs_mask_train, imgs_test = self.load_data()
 		print("loading data done")
-		model = self.get_retina_unet()
+		model = self.get_unet()
 		print("got unet")
 
 		model_checkpoint = ModelCheckpoint('unet.hdf5', monitor='loss',verbose=1, save_best_only=True)
