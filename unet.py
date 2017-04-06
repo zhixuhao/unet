@@ -18,6 +18,11 @@ def dice_coef(y_true, y_pred):
 def dice_coef_loss(y_true, y_pred):
 	return 1.-dice_coef(y_true, y_pred)
 
+def distance_loss(y_true, y_pred):
+	y_true_f = K.flatten(y_true)
+	y_pred_f = K.flatten(y_pred)
+	return (K.sum(K.abs(y_true_f - y_pred_f)))/(512*512)
+
 class myUnet(object):
 
 	def __init__(self, img_rows = 512, img_cols = 512):
@@ -28,7 +33,7 @@ class myUnet(object):
 	def load_data(self):
 
 		mydata = dataProcess(self.img_rows, self.img_cols)
-		imgs_train, imgs_mask_train = mydata.load_train_data()
+		imgs_train, imgs_mask_train = mydata.load_train_data(reverse=True)
 		imgs_test = mydata.load_test_data()
 		return imgs_train, imgs_mask_train, imgs_test
 
@@ -154,7 +159,7 @@ class myUnet(object):
 
 		model = Model(input = inputs, output = conv10)
 
-		model.compile(optimizer = Adam(lr = 1e-4), loss=dice_coef_loss, metrics=[dice_coef])
+		model.compile(optimizer = Adam(lr = 1e-4), loss=dice_coef_loss, metrics=[dice_coef,distance_loss])
 
 		return model
 

@@ -197,7 +197,7 @@ class dataProcess(object):
 		np.save(self.npy_path + '/imgs_test.npy', imgdatas)
 		print('Saving to imgs_test.npy files done.')
 
-	def load_train_data(self):
+	def load_train_data(self, reverse = False):
 		print('-'*30)
 		print('load train images...')
 		print('-'*30)
@@ -209,6 +209,8 @@ class dataProcess(object):
 		mean = imgs_train.mean(axis = 0)
 		imgs_train -= mean	
 		imgs_mask_train /= 255
+		if reverse:
+			imgs_mask_train = 1 - imgs_mask_train
 		imgs_mask_train[imgs_mask_train > 0.5] = 1
 		imgs_mask_train[imgs_mask_train <= 0.5] = 0
 		return imgs_train,imgs_mask_train
