@@ -159,7 +159,7 @@ class myUnet(object):
 
 		model = Model(input = inputs, output = conv10)
 
-		model.compile(optimizer = Adam(lr = 1e-4), loss=dice_coef_loss, metrics=[dice_coef,distance_loss])
+		model.compile(optimizer = Adam(lr = 1e-3), loss=dice_coef_loss, metrics=[dice_coef,distance_loss])
 
 		return model
 
