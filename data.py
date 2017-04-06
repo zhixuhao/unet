@@ -2,7 +2,7 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 import numpy as np 
 import os
 import glob
-import cv2
+#import cv2
 from libtiff import TIFF
 
 class myAugmentation(object):
