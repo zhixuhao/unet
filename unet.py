@@ -191,7 +191,7 @@ class myUnet(object):
 		print("loading data")
 		imgs_train, imgs_mask_train, imgs_test = self.load_data()
 		print("loading data done")
-		model = self.get_retina_unet()
+		model = self.get_unet()
 		print("got unet")
 
 		model_checkpoint = ModelCheckpoint('unet.hdf5', monitor='loss',verbose=1, save_best_only=True)
