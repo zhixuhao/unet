@@ -148,6 +148,7 @@ class dataProcess(object):
 		self.img_type = img_type
 		self.test_path = test_path
 		self.npy_path = npy_path
+		self.mean = False
 
 	def create_train_data(self):
 		i = 0
@@ -207,11 +208,21 @@ class dataProcess(object):
 		imgs_mask_train = imgs_mask_train.astype('float32')
 		imgs_train /= 255
 		mean = imgs_train.mean(axis = 0)
+		self.mean = mean
 		imgs_train -= mean	
 		imgs_mask_train /= 255
 		imgs_mask_train[imgs_mask_train > 0.5] = 1
 		imgs_mask_train[imgs_mask_train <= 0.5] = 0
 		return imgs_train,imgs_mask_train
+
+	def get_mean(self):
+		print "get mean image...."
+		imgs_train = np.load(self.npy_path+"/imgs_train.npy")
+		imgs_train /= 255
+		mean = imgs_train.mean(axis = 0)
+		self.mean = mean
+		print "done mean image...."
+		return mean
 
 	def load_test_data(self):
 		print('-'*30)
@@ -220,7 +231,9 @@ class dataProcess(object):
 		imgs_test = np.load(self.npy_path+"/imgs_test.npy")
 		imgs_test = imgs_test.astype('float32')
 		imgs_test /= 255
-		mean = imgs_test.mean(axis = 0)
+		mean = self.mean
+		if self.mean == False:
+			mean = self.get_mean()
 		imgs_test -= mean	
 		return imgs_test
 
