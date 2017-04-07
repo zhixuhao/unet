@@ -6,6 +6,11 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 from data import dataProcess
 
+def distance_loss(y_true, y_pred):
+	y_true_f = K.flatten(y_true)
+	y_pred_f = K.flatten(y_pred)
+	return (K.sum(K.abs(y_true_f - y_pred_f)))/(512*512), K.sum(y_true_f), K.sum(y_pred_f)
+
 class myUnet(object):
 
 	def __init__(self, img_rows = 512, img_cols = 512):
@@ -20,10 +25,6 @@ class myUnet(object):
 		imgs_test = mydata.load_test_data()
 		return imgs_train, imgs_mask_train, imgs_test
 
-	def distance_loss(y_true, y_pred):
-		y_true_f = K.flatten(y_true)
-		y_pred_f = K.flatten(y_pred)
-		return (K.sum(K.abs(y_true_f - y_pred_f)))/(512*512), K.sum(y_true_f), K.sum(y_pred_f)
 
 	def get_unet(self):
 
