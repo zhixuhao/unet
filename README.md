@@ -44,22 +44,31 @@ This tutorial depends on the following libraries:
 
 * Tensorflow
 * Keras >= 1.0
+* libtiff
 
 Also, this code should be compatible with Python versions 2.7-3.5.
 
 ### Prepare the data
 
-First transfer 3D volume tiff to 30 512*512 images, and then read them one by one and save to .npy.
+First transfer 3D volume tiff to 30 512*512 images.
+
+To feed the unet, data augmentation is necessary.
+
+An [image deformation](http://faculty.cs.tamu.edu/schaefer/research/mls.pdf) method is used, the code is 
+
+availabel in this [repository](https://github.com/cxcxcxcx/imgwarp-opencv).
+
+
+
 
 ### Define the model
 
-* Check out ```get_unet()``` in ```train.py``` to modify the model, optimizer and loss function.
+* Check out ```get_unet()``` in ```unet.py``` to modify the model, optimizer and loss function.
 
 ### Train the model and generate masks for test images
 
-* Run ```python train.py``` to train the model.
+* Run ```python unet.py``` to train the model.
 
-Check out ```train_predict()``` to modify the number of iterations (epochs), batch size, etc.
 
 After this script finishes, in ```imgs_mask_test.npy``` masks for corresponding images in ```imgs_test.npy```
 should be generated. I suggest you examine these masks for getting further insight of your model's performance.
