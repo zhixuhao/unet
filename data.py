@@ -2,8 +2,8 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 import numpy as np 
 import os
 import glob
-import cv2
-from libtiff import TIFF
+#import cv2
+#from libtiff import TIFF
 
 class myAugmentation(object):
 	
@@ -231,7 +231,7 @@ if __name__ == "__main__":
 	#aug.splitMerge()
 	#aug.splitTransform()
 	mydata = dataProcess(512,512)
-	#mydata.create_train_data()
-	#mydata.create_test_data()
-	imgs_train,imgs_mask_train = mydata.load_train_data()
-	print imgs_train.shape,imgs_mask_train.shape
+	mydata.create_train_data()
+	mydata.create_test_data()
+	#imgs_train,imgs_mask_train = mydata.load_train_data()
+	#print imgs_train.shape,imgs_mask_train.shape
