@@ -44,7 +44,7 @@ This tutorial depends on the following libraries:
 
 * Tensorflow
 * Keras >= 1.0
-* libtiff
+* libtiff(optional)
 
 Also, this code should be compatible with Python versions 2.7-3.5.
 
@@ -72,6 +72,14 @@ availabel in this [repository](https://github.com/cxcxcxcx/imgwarp-opencv).
 
 After this script finishes, in ```imgs_mask_test.npy``` masks for corresponding images in ```imgs_test.npy```
 should be generated. I suggest you examine these masks for getting further insight of your model's performance.
+
+### Results
+
+Use the trained model to do segmentation on test images, the result is statisfactory.
+
+![img/0test.png](img/0test.png)
+
+![img/0label.png](img/0label.png)
 
 
 ## About Keras
