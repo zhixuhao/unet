@@ -193,6 +193,7 @@ class dataProcess(object):
 			#img = cv2.imread(self.test_path + "/" + midname,cv2.IMREAD_GRAYSCALE)
 			#img = np.array([img])
 			imgdatas[i] = img
+			i += 1
 		print('loading done')
 		np.save(self.npy_path + '/imgs_test.npy', imgdatas)
 		print('Saving to imgs_test.npy files done.')
