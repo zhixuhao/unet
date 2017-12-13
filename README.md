@@ -48,17 +48,21 @@ This tutorial depends on the following libraries:
 
 Also, this code should be compatible with Python versions 2.7-3.5.
 
+You can also set up a virtual enviroment and run your code from there:
+* Create virtual enviroment folder: ```virtualenv -p python3 venv```
+* Activate your virtual enviroment: ```source vev/bin/activate```
+* Install packages needed in enviroment: ```pip3 install -r requirements.txt```
+* Check installed packages: ```pip3 freeze```
+
 ### Prepare the data
 
 First transfer 3D volume tiff to 30 512*512 images.
 
 To feed the unet, data augmentation is necessary.
 
-An [image deformation](http://faculty.cs.tamu.edu/schaefer/research/mls.pdf) method is used, the code is 
+An [image deformation](http://faculty.cs.tamu.edu/schaefer/research/mls.pdf) method is used, the code is
 
 availabel in this [repository](https://github.com/cxcxcxcx/imgwarp-opencv).
-
-
 
 
 ### Define the model
@@ -67,8 +71,7 @@ availabel in this [repository](https://github.com/cxcxcxcx/imgwarp-opencv).
 
 ### Train the model and generate masks for test images
 
-* Run ```python unet.py``` to train the model.
-
+* Run ```python3 unet.py``` to train the model.
 
 After this script finishes, in ```imgs_mask_test.npy``` masks for corresponding images in ```imgs_test.npy```
 should be generated. I suggest you examine these masks for getting further insight of your model's performance.
@@ -80,6 +83,25 @@ Use the trained model to do segmentation on test images, the result is statisfac
 ![img/0test.png](img/0test.png)
 
 ![img/0label.png](img/0label.png)
+
+## Folder structure
+
+* ```./data```: Contains sample data which can be used to test unet.
+* ```./deform```: Contains 3 folders which are used when running your program. Images in ```./deform/train``` and ```./deform/label``` are used to train your network. After building your model images from ```./deform/test``` are used as inputs to produce results.
+* ```./npydata```: Contains the ```.npy``` files generated from ```.tif``` images from our deform folder.
+* ```./results```: Outputs from our unet are saved in this folder.
+
+## From clone to your first results
+
+* After cloning this project the first step is loading up the deform folder with the data you want to use to build and test your model. There is a sample dataset in the ```./data``` folder.
+
+* ```python3 data.py``` to generate ```.npy``` files from your input data. This should produce 3 files in your ```./npydata``` folder.
+
+* ```python3 unet.py``` to build your model. This should create a ```unet.hdf5``` file which is your model and can be loaded in your future programs. It also generates the results from the test dataset.
+
+* Additionally you can use ```python3 test_predict.py``` to generate results for different test sets.
+
+
 
 
 ## About Keras
