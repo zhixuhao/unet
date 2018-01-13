@@ -4,6 +4,7 @@ split 30 single images from an array of images : train-volume.tif label-volume.t
 from libtiff import TIFF3D,TIFF
 dirtype = ("train","label","test")
 
+
 def split_img():
 
 	'''
@@ -17,6 +18,7 @@ def split_img():
 			imgname = t + "/" + str(i) + ".tif"
 			img = TIFF.open(imgname,'w')
 			img.write_image(imgarr[i])
+
 
 def merge_img():
 	
@@ -32,8 +34,8 @@ def merge_img():
 		imgarr.append(img.read_image())
 	imgdir.write_image(imgarr)
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
 	merge_img()
 
 

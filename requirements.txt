@@ -1,0 +1,6 @@
+numpy
+scipy
+tensorflow
+keras
+libtiff
+h5py

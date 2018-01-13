@@ -1,9 +1,10 @@
-from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-import numpy as np 
 import os
 import glob
-#import cv2
-#from libtiff import TIFF
+
+import numpy as np
+
+from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+
 
 class myAugmentation(object):
 	
@@ -14,7 +15,10 @@ class myAugmentation(object):
 	Finally, seperate augmentated image apart into train image and label
 	"""
 
-	def __init__(self, train_path="train", label_path="label", merge_path="merge", aug_merge_path="aug_merge", aug_train_path="aug_train", aug_label_path="aug_label", img_type="tif"):
+	def __init__(self, train_path="train", label_path="label",
+				 merge_path="merge", aug_merge_path="aug_merge",
+				 aug_train_path="aug_train", aug_label_path="aug_label",
+				 img_type="tif"):
 		
 		"""
 		Using glob to get all .img_type form path
@@ -135,7 +139,9 @@ class myAugmentation(object):
 
 class dataProcess(object):
 
-	def __init__(self, out_rows, out_cols, data_path = "../deform/train", label_path = "../deform/label", test_path = "../test", npy_path = "../npydata", img_type = "tif"):
+	def __init__(self, out_rows, out_cols, data_path = "../deform/train",
+				 label_path = "../deform/label", test_path = "../test",
+				 npy_path = "../npydata", img_type = "tif"):
 
 		"""
 		
@@ -224,6 +230,7 @@ class dataProcess(object):
 		#mean = imgs_test.mean(axis = 0)
 		#imgs_test -= mean	
 		return imgs_test
+
 
 if __name__ == "__main__":
 

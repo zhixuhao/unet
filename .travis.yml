@@ -1,0 +1,45 @@
+# vim ft=yaml
+
+# After changing this file, check it on:
+#   http://yaml-online-parser.appspot.com/
+
+# See doc/travis_notes.txt for some guidelines
+
+env:
+  global:
+    - CODACY_PROJECT_TOKEN=615db318973f44689a74a978b4c05d2b
+
+language: python
+
+sudo: true
+
+python:
+  - 3.4
+  - 3.5
+  - 3.6
+
+# See http://docs.travis-ci.com/user/caching/#pip-cache
+cache: pip
+
+before_install:
+  - pip install --upgrade pip
+
+install:
+  - root=$PWD
+  - pip install -r requirements.txt
+  - pip install nose>=1.3.7 coverage codecov pytest>=3.0.5 codacy-coverage
+
+before_script:
+  - mkdir $root/results
+
+script:
+  # - pytest -v --doctest-modules
+  - nosetests -v --exe --with-doctest --with-xunit --with-coverage --cover-package=unet
+
+after_success:
+  # - codecov  # public repository on Travis CI
+  # private repository on Travis CI
+  - codecov -t 448755e9-6bac-41ef-b5a3-28c12fd29f09
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
+  - coverage report
