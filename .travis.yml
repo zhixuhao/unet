@@ -31,7 +31,8 @@ install:
   - pip install nose>=1.3.7 coverage codecov pytest>=3.0.5 codacy-coverage
 
 before_script:
-  - mkdir $root/results
+  - mkdir results & mkdir npydata & mkdir deform & mkdir test
+  - mkdir deform/train & mkdir deform/label
 
 script:
   # - pytest -v --doctest-modules

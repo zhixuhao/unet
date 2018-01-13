@@ -4,3 +4,4 @@ tensorflow
 keras
 libtiff
 h5py
+opencv-python
