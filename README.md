@@ -1,5 +1,9 @@
 # Implementation of deep learning framework -- Unet, using Keras
 
+[![Build Status](https://travis-ci.org/Borda/unet.svg?branch=master)](https://travis-ci.org/Borda/unet)
+[![codecov](https://codecov.io/gh/Borda/unet/branch/master/graph/badge.svg)](https://codecov.io/gh/Borda/unet)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f0e7f96bbead4fb5a816eb985cf55756)](https://www.codacy.com/app/Borda/unet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Borda/unet&amp;utm_campaign=Badge_Grade)
+
 The architecture was inspired by [U-Net: Convolutional Networks for Biomedical Image Segmentation](http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/).
 
 ---
@@ -19,7 +23,7 @@ To do data augumentation, an image deformation method was used, which was implem
 
 ### Model
 
-![img/u-net-architecture.png](img/u-net-architecture.png)
+![figures/u-net-architecture.png](figures/u-net-architecture.png)
 
 This deep neural network is implemented with Keras functional API, which makes it extremely easy to experiment with different interesting architectures.
 
@@ -77,9 +81,9 @@ should be generated. I suggest you examine these masks for getting further insig
 
 Use the trained model to do segmentation on test images, the result is statisfactory.
 
-![img/0test.png](img/0test.png)
+![figures/0test.png](figures/0test.png)
 
-![img/0label.png](img/0label.png)
+![figures/0label.png](figures/0label.png)
 
 
 ## About Keras
