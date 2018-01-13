@@ -32,31 +32,31 @@ class myUnet(object):
 		unet with crop(because padding = valid) 
 
 		conv1 = Conv2D(64, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(inputs)
-		print "conv1 shape:",conv1.shape
+		print ("conv1 shape:",conv1.shape)
 		conv1 = Conv2D(64, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(conv1)
-		print "conv1 shape:",conv1.shape
+		print ("conv1 shape:",conv1.shape)
 		crop1 = Cropping2D(cropping=((90,90),(90,90)))(conv1)
-		print "crop1 shape:",crop1.shape
+		print ("crop1 shape:",crop1.shape)
 		pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
-		print "pool1 shape:",pool1.shape
+		print ("pool1 shape:",pool1.shape)
 
 		conv2 = Conv2D(128, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(pool1)
-		print "conv2 shape:",conv2.shape
+		print ("conv2 shape:",conv2.shape)
 		conv2 = Conv2D(128, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(conv2)
-		print "conv2 shape:",conv2.shape
+		print ("conv2 shape:",conv2.shape)
 		crop2 = Cropping2D(cropping=((41,41),(41,41)))(conv2)
-		print "crop2 shape:",crop2.shape
+		print ("crop2 shape:",crop2.shape)
 		pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
-		print "pool2 shape:",pool2.shape
+		print ("pool2 shape:",pool2.shape)
 
 		conv3 = Conv2D(256, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(pool2)
-		print "conv3 shape:",conv3.shape
+		print ("conv3 shape:",conv3.shape)
 		conv3 = Conv2D(256, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(conv3)
-		print "conv3 shape:",conv3.shape
+		print ("conv3 shape:",conv3.shape)
 		crop3 = Cropping2D(cropping=((16,17),(16,17)))(conv3)
-		print "crop3 shape:",crop3.shape
+		print ("crop3 shape:",crop3.shape)
 		pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
-		print "pool3 shape:",pool3.shape
+		print ("pool3 shape:",pool3.shape)
 
 		conv4 = Conv2D(512, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(pool3)
 		conv4 = Conv2D(512, 3, activation = 'relu', padding = 'valid', kernel_initializer = 'he_normal')(conv4)
@@ -91,25 +91,25 @@ class myUnet(object):
 		'''
 
 		conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
-		print "conv1 shape:",conv1.shape
+		print ("conv1 shape:",conv1.shape)
 		conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
-		print "conv1 shape:",conv1.shape
+		print ("conv1 shape:",conv1.shape)
 		pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
-		print "pool1 shape:",pool1.shape
+		print ("pool1 shape:",pool1.shape)
 
 		conv2 = Conv2D(128, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(pool1)
-		print "conv2 shape:",conv2.shape
+		print ("conv2 shape:",conv2.shape)
 		conv2 = Conv2D(128, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv2)
-		print "conv2 shape:",conv2.shape
+		print ("conv2 shape:",conv2.shape)
 		pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
-		print "pool2 shape:",pool2.shape
+		print ("pool2 shape:",pool2.shape)
 
 		conv3 = Conv2D(256, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(pool2)
-		print "conv3 shape:",conv3.shape
+		print ("conv3 shape:",conv3.shape)
 		conv3 = Conv2D(256, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv3)
-		print "conv3 shape:",conv3.shape
+		print ("conv3 shape:",conv3.shape)
 		pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
-		print "pool3 shape:",pool3.shape
+		print ("pool3 shape:",pool3.shape)
 
 		conv4 = Conv2D(512, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(pool3)
 		conv4 = Conv2D(512, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv4)
