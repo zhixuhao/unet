@@ -8,14 +8,16 @@ The architecture was inspired by [U-Net: Convolutional Networks for Biomedical I
 
 ### Data
 
-[Provided data](http://brainiac2.mit.edu/isbi_challenge/) you can download the train and test data from this server.
-you can also find data in the data folder.
+The original dataset is from [isbi challenge](http://brainiac2.mit.edu/isbi_challenge/), and I've downloaded it and done the pre-processing.
 
-### Pre-processing
+You can find it in folder data/membrane.
 
-The images are 3-D volume tiff, you should transfer the stacks into images first.
-The data for training contains 30 512*512 images, which are far not enough to feed a deep learning neural network.
-To do data augumentation, an image deformation method was used, which was implemented in C++ using opencv.
+### Data augmentation
+
+The data for training contains 30 512*512 images, which are far not enough to feed a deep learning neural network. I use a module called ImageDataGenerator in keras.preprocessing.image to do data augmentation.
+
+See dataPrepare.ipynb and data.py for detail.
+
 
 ### Model
 
@@ -28,11 +30,12 @@ makes sure that mask pixels are in \[0, 1\] range.
 
 ### Training
 
-The model is trained for 10 epochs.
+The model is trained for 5 epochs.
 
-After 10 epochs, calculated accuracy is about 0.97.
+After 5 epochs, calculated accuracy is about 0.97.
 
-Loss function for the training is basically just a binary crossentropy
+Loss function for the training is basically just a binary crossentropy.
+
 
 ---
 
@@ -44,34 +47,16 @@ This tutorial depends on the following libraries:
 
 * Tensorflow
 * Keras >= 1.0
-* libtiff(optional)
 
 Also, this code should be compatible with Python versions 2.7-3.5.
 
-### Prepare the data
+### Run main.py
 
-First transfer 3D volume tiff to 30 512*512 images.
+You will see the predicted results of test image in data/membrane/test
 
-To feed the unet, data augmentation is necessary.
-
-An [image deformation](http://faculty.cs.tamu.edu/schaefer/research/mls.pdf) method is used, the code is 
-
-availabel in this [repository](https://github.com/cxcxcxcx/imgwarp-opencv).
+### Or follow notebook trainUnet
 
 
-
-
-### Define the model
-
-* Check out ```get_unet()``` in ```unet.py``` to modify the model, optimizer and loss function.
-
-### Train the model and generate masks for test images
-
-* Run ```python unet.py``` to train the model.
-
-
-After this script finishes, in ```imgs_mask_test.npy``` masks for corresponding images in ```imgs_test.npy```
-should be generated. I suggest you examine these masks for getting further insight of your model's performance.
 
 ### Results
 
