@@ -9,8 +9,18 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
+def dice_coef(y_true, y_pred):
+    smooth = 1
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    intersection = K.sum(y_true_f * y_pred_f)
+    return (2. * intersection +smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) +smooth)
 
-def unet(pretrained_weights = None,input_size = (256,256,1)):
+def dice_coef_loss(y_true, y_pred):
+    print("dice loss")
+    return 1-dice_coef(y_true, y_pred)
+
+def unet(pretrained_weights = None,input_size = (256,256,3)):
     inputs = Input(input_size)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
@@ -54,7 +64,7 @@ def unet(pretrained_weights = None,input_size = (256,256,1)):
 
     model = Model(input = inputs, output = conv10)
 
-    model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
+    model.compile(optimizer = Adam(lr = 1e-4), loss = dice_coef_loss, metrics = ['accuracy'])
     
     #model.summary()
 
@@ -62,5 +72,3 @@ def unet(pretrained_weights = None,input_size = (256,256,1)):
     	model.load_weights(pretrained_weights)
 
     return model
-
-
