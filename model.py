@@ -9,6 +9,12 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras import backend as keras
 
+def jaccard_distance(y_true, y_pred, smooth=100):
+    intersection = K.sum(K.abs(y_true * y_pred), axis=-1)
+    sum_ = K.sum(K.abs(y_true) + K.abs(y_pred), axis=-1)
+    jac = (intersection + smooth) / (sum_ - intersection + smooth)
+    return (1 - jac) * smooth
+
 def dice_coef(y_true, y_pred):
     smooth = 1
     y_true_f = K.flatten(y_true)
@@ -19,6 +25,27 @@ def dice_coef(y_true, y_pred):
 def dice_coef_loss(y_true, y_pred):
     print("dice loss")
     return 1-dice_coef(y_true, y_pred)
+def specificity(y_true,y_pred):
+    specificity=0
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    TP=K.sum(y_true_f*y_pred_f)
+    TN=K.sum((1-y_true_f)*(1-y_pred_f))
+    FP=K.sum((1-y_true_f)*y_pred_f)
+    FN=K.sum(y_true_f*(1-y_pred_f))
+    specificity=(TN)/((TN+FP))
+    return specificity
+def sensitivity(y_true,y_pred):
+    sensitivity=0
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    TP=K.sum(y_true_f*y_pred_f)
+    TN=K.sum((1-y_true_f)*(1-y_pred_f))
+    FP=K.sum((1-y_true_f)*y_pred_f)
+    FN=K.sum(y_true_f*(1-y_pred_f))
+    sensitivity=(TP)/((TP+FN))
+       
+    return sensitivity
 
 def unet(pretrained_weights = None,input_size = (256,256,3)):
     inputs = Input(input_size)
