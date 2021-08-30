@@ -8,16 +8,15 @@ The architecture was inspired by [U-Net: Convolutional Networks for Biomedical I
 
 ### Data
 
-The original dataset is from [isbi challenge](http://brainiac2.mit.edu/isbi_challenge/), and I've downloaded it and done the pre-processing.
+The original dataset is from [EPFL electron microscopy dataset](https://www.epfl.ch/labs/cvlab/data/data-em/), and we've downloaded it and done labels.
+You can find it in folder data/epfl_train.
 
-You can find it in folder data/membrane.
-
-### Data augmentation
-
-The data for training contains 30 512*512 images, which are far not enough to feed a deep learning neural network. I use a module called ImageDataGenerator in keras.preprocessing.image to do data augmentation.
-
-See dataPrepare.ipynb and data.py for detail.
-
+<img src="data/epfl_train/PSD/training0000.png" alt="PSD" width="400"/>
+<img src="data/epfl_train/axon/training0000.png" alt="axon" width="400"/>
+<img src="data/epfl_train/membranes/training0000.png" alt="membranes" width="400"/>
+<img src="data/epfl_train/mitochondria/training0000.png" alt="mitochondria" width="400"/>
+<img src="data/epfl_train/mitochondrial boundaries/training0000.png" alt="mitohondrial boundaries" width="400"/>
+<img src="data/epfl_train/vesicles/training0000.png" alt="vesicles" width="400"/>
 
 ### Model
 
@@ -25,16 +24,16 @@ See dataPrepare.ipynb and data.py for detail.
 
 This deep neural network is implemented with Keras functional API, which makes it extremely easy to experiment with different interesting architectures.
 
-Output from the network is a 512*512 which represents mask that should be learned. Sigmoid activation function
+Output from the network is a 256*256 which represents mask that should be learned. Sigmoid activation function
 makes sure that mask pixels are in \[0, 1\] range.
+
+Also we added batch normalization after each convolution and the ReLU activation layers
 
 ### Training
 
-The model is trained for 5 epochs.
+The model is trained for 100 epochs.
 
-After 5 epochs, calculated accuracy is about 0.97.
-
-Loss function for the training is basically just a binary crossentropy.
+Loss function for the training is Dice Loss.
 
 
 ---
@@ -50,21 +49,12 @@ This tutorial depends on the following libraries:
 
 Also, this code should be compatible with Python versions 2.7-3.5.
 
-### Run main.py
 
-You will see the predicted results of test image in data/membrane/test
-
-### Or follow notebook trainUnet
+### Follow notebook trainUnet
 
 
 
 ### Results
-
-Use the trained model to do segmentation on test images, the result is statisfactory.
-
-![img/0test.png](img/0test.png)
-
-![img/0label.png](img/0label.png)
 
 
 ## About Keras
