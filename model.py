@@ -84,7 +84,7 @@ def unet(pretrained_weights = None,input_size = (256,256,1), num_class = 2):
                       loss=[dice_coef_loss],
                       metrics=[dice_coef])
     elif num_class == 5:
-        model.compile(optimizer='rmsprop',
+        model.compile(optimizer= keras.optimizers.Adam(lr = 1e-4),
                       loss=[dice_coef_loss_multilabel5],
                       # loss=['binary_crossentropy'],
                       # loss=['categorical_crossentropy'],
@@ -92,7 +92,7 @@ def unet(pretrained_weights = None,input_size = (256,256,1), num_class = 2):
                       #,loss_weights = [0.1,0.1,0.1,1.0,0.1]
                       )
     elif num_class == 6:
-        model.compile(optimizer='rmsprop',
+        model.compile(optimizer= keras.optimizers.Adam(lr = 1e-4),
                       loss=[dice_coef_loss_multilabel6],
                       # loss=['binary_crossentropy'],
                       # loss=['categorical_crossentropy'],
