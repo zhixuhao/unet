@@ -39,6 +39,15 @@ you can use this notebook for training purpose [Notebook Path](trainUnet.ipynb)
     1. You can also make your own custom Generator
     2. In this git **zhixuhao** is using flow from directory generator (which takes care of your ram even if dataset is to large)
 
+### Start tensorboard
+
+```bash
+
+conda activate your_env
+tensorboard --logdir logs/ --port 6006 --bind_all
+
+
+```
 
 <br>
 
