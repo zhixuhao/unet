@@ -1,0 +1,4 @@
+weights/*
+.ipynb_checkpoints
+__pycache__
+logs

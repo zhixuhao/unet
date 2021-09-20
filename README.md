@@ -1,4 +1,4 @@
-# Implementation of deep learning framework -- Unet, using Keras
+## Implementation of deep learning framework -- Unet, using Keras
 
 The architecture was inspired by [U-Net: Convolutional Networks for Biomedical Image Segmentation](http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/).
 
@@ -8,16 +8,18 @@ The architecture was inspired by [U-Net: Convolutional Networks for Biomedical I
 
 ### Data
 
-The original dataset is from [isbi challenge](http://brainiac2.mit.edu/isbi_challenge/), and I've downloaded it and done the pre-processing.
+You can use your custom data, I used this git for my research work. Data directory should be like this
 
-You can find it in folder data/membrane.
-
-### Data augmentation
-
-The data for training contains 30 512*512 images, which are far not enough to feed a deep learning neural network. I use a module called ImageDataGenerator in keras.preprocessing.image to do data augmentation.
-
-See dataPrepare.ipynb and data.py for detail.
-
+```
+|- Dataset
+    |- images
+        |- image.jpg
+        |- image2.jpg
+    |- labels
+        |- image.jpg
+        |- image2.jpg
+```
+<br>
 
 ### Model
 
@@ -28,55 +30,59 @@ This deep neural network is implemented with Keras functional API, which makes i
 Output from the network is a 512*512 which represents mask that should be learned. Sigmoid activation function
 makes sure that mask pixels are in \[0, 1\] range.
 
+<br>
+
 ### Training
 
-The model is trained for 5 epochs.
+you can use this notebook for training purpose [Notebook Path](trainUnet.ipynb)
+    
+    1. You can also make your own custom Generator
+    2. In this git **zhixuhao** is using flow from directory generator (which takes care of your ram even if dataset is to large)
 
-After 5 epochs, calculated accuracy is about 0.97.
+### Start tensorboard
 
-Loss function for the training is basically just a binary crossentropy.
+```bash
+
+conda activate your_env
+tensorboard --logdir logs/ --port 6006 --bind_all
 
 
----
+```
 
-## How to use
+<br>
+
+### Evaluation
+
+In this git we focused on 
+
+1. dice-coeffecient 
+
+
+<br>
+Now you can see the predicted mask at the time of training so that you know how's your model performing
+
+<br>
+
+![img/u-net-architecture.png](img/prediction.png)
+
+
+
+<br>
 
 ### Dependencies
 
 This tutorial depends on the following libraries:
 
-* Tensorflow
-* Keras >= 1.0
+Run the following bash commands to make a seperate environemnt for this git
 
-Also, this code should be compatible with Python versions 2.7-3.5.
-
-### Run main.py
-
-You will see the predicted results of test image in data/membrane/test
-
-### Or follow notebook trainUnet
+1. Install conda first
+    ```bash
+    conda create -n unet_env python=3.6 tensorflow keras, opencv-python matplotlib 
+    conda activate unet_env
+    ```
 
 
 
-### Results
-
-Use the trained model to do segmentation on test images, the result is statisfactory.
-
-![img/0test.png](img/0test.png)
-
-![img/0label.png](img/0label.png)
 
 
-## About Keras
 
-Keras is a minimalist, highly modular neural networks library, written in Python and capable of running on top of either TensorFlow or Theano. It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to doing good research.
-
-Use Keras if you need a deep learning library that:
-
-allows for easy and fast prototyping (through total modularity, minimalism, and extensibility).
-supports both convolutional networks and recurrent networks, as well as combinations of the two.
-supports arbitrary connectivity schemes (including multi-input and multi-output training).
-runs seamlessly on CPU and GPU.
-Read the documentation [Keras.io](http://keras.io/)
-
-Keras is compatible with: Python 2.7-3.5.
