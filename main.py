@@ -1,35 +1,8 @@
 from model import *
 from data import *
 import matplotlib.pyplot as plt
-#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-#print(tf.test.is_built_with_cuda())
-#print(tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None))
-
-#from tensorflow.python.client import device_lib
-#print(device_lib.list_local_devices())
-os.environ['TF_XLA_FLAGS'] = '--tf_xla_enable_xla_devices'
-#print("GPUs: ", len(tf.config.experimental.list_physical_devices('GPU')))
-
-#from tensorflow.compat.v1 import ConfigProto
-#from tensorflow.compat.v1 import InteractiveSession
-
-#config = ConfigProto()
-#config.gpu_options.allow_growth = True
-#session = InteractiveSession(config=config)
-
-#GPU desable
-try:
-    # Disable all GPUS
-   tf.config.set_visible_devices([], 'GPU')
-   visible_devices = tf.config.get_visible_devices()
-   for device in visible_devices:
-       assert device.device_type != 'GPU'
-except:
-    # Invalid device or cannot modify virtual devices once initialized.
-    pass
-
-num_class = 1
+num_class = 6
 
 data_gen_args = dict(rotation_range= 5,
                     width_shift_range=0.05,
@@ -41,12 +14,12 @@ data_gen_args = dict(rotation_range= 5,
                     fill_mode='nearest')
 
 #берутся первые классы из списка
-mask_name_label_list = ["mitochondria", "PSD", "vesicles", "axon", "boundaries", "mitochondrial boundaries"]
+mask_name_label_list = ["mitochondrion", "PSD", "vesicles", "axon", "membranes", "mitochondrial boundaries"]
 
-myGene = get_train_generator_data(dir_img_name = 'data/train/original',
-                                  dir_mask_name = 'data/train/',
+myGene = get_train_generator_data(dir_img_name = 'data/epfl_train/slices',
+                                  dir_mask_name = 'data/epfl_train/',
                                   aug_dict = data_gen_args,
-                                  batch_size = 9,
+                                  batch_size = 1,
                                   list_name_label_mask = mask_name_label_list,
                                   delete_mask_name = None,
                                   target_size = (256,256),
@@ -65,18 +38,18 @@ myGene = get_train_generator_data(dir_img_name = 'data/train/original',
 model = unet(num_class = num_class)
 #model = unet('my_unet_multidata_pe69_bs9_1class.hdf5', num_class = num_class)
 
-model_checkpoint = ModelCheckpoint('my_unet_multidata_pe69_bs9_1class.hdf5', mode='auto', monitor='loss',verbose=1, save_best_only=True)
+model_checkpoint = ModelCheckpoint('my_unet_multidata_pe69_bs9_6class.hdf5', mode='auto', monitor='loss',verbose=1, save_best_only=True)
 
-history = model.fit(myGene, steps_per_epoch=69, epochs=100, callbacks=[model_checkpoint], verbose=1, validation_data=myGene, validation_steps=17)
+history = model.fit(myGene, steps_per_epoch=15, epochs=2, callbacks=[model_checkpoint], verbose=1, validation_data=myGene, validation_steps=5)
 
 #save history
 import json
-with open('training_history_pe69_bs9_1class.json', 'w') as file:
+with open('training_history_pe69_bs9_6class.json', 'w') as file:
     json.dump(history.history, file, indent=4)
 # Обучение и проверка точности значений
 
-plt.plot(history.history["dice_coef"])
-plt.plot(history.history["val_dice_coef"])
+plt.plot(history.history["dice_coef_multilabel"])
+plt.plot(history.history["val_dice_coef_multilabel"])
 plt.title("Model Dice")
 plt.ylabel("Dice")
 plt.xlabel("Epoch")
