@@ -6,6 +6,8 @@ import skimage.io as io
 import numpy as np
 from splitImages import *
 
+import keras
+
 #rgb
 any                 = [192, 192, 192]   #light-gray
 borders             = [0,0,255]         #blue
@@ -41,7 +43,7 @@ def test(model_name, save_dir, num_class = 1, size_test_train = 12):
 
 def test_one_img(model_name, save_dir, img_name, filepath = "data/test", num_class = 1):
 
-    model = unet(model_name, num_class = num_class)
+    model = keras.models.load_model(model_name, compile = False)
     
     img = io.imread(os.path.join(filepath, img_name), as_gray=True)
 
@@ -84,7 +86,7 @@ def glit_mask(tiled_masks, num_class, out_size, tile_info, overlap = 64):
 #main tailing function
 def test_tiled(model_name, num_class, save_mask_dir,  filenames, filepath = "data/test", size = 256, overlap = 64, save_dir = None, unique_area = 0):
     
-    model = unet(model_name, num_class = num_class)
+    model = keras.models.load_model(model_name, compile = False)
     
     for img_name in filenames:
 

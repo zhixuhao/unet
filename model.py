@@ -3,9 +3,8 @@ from keras.layers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 import keras
 
-from keras.utils.vis_utils import plot_model
-import os
-os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+import tensorflow as tf
+from metrics import *
 
 def unet(pretrained_weights = None,input_size = (256,256,1), num_class = 2):
     inputs = Input(input_size)
@@ -77,56 +76,14 @@ def unet(pretrained_weights = None,input_size = (256,256,1), num_class = 2):
 
     model = Model(inputs=inputs, outputs=conv10)
 
-    #model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['categorical_accuracy'])
 
-    model.compile(optimizer='adam',
+    model.compile(optimizer=tf.optimizers.Adam(learning_rate = 1e-4),
                   loss=[universal_dice_coef_loss(num_class)],
                   metrics=[universal_dice_coef_multilabel(num_class)])
 
-    #print(model.summary())
-    #plot_model(model, show_shapes=True, show_layer_names=True, expand_nested=True, to_file="model1.png")
+    # model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    #plot_model(model, show_shapes=True, show_layer_names=True, expand_nested=False, to_file="model2.png")
-    #plot_model(model, show_shapes=True, show_layer_names=False, expand_nested=True, to_file="model3.png")
-    #plot_model(model, show_shapes=False, show_layer_names=True, expand_nested=True, to_file="model4.png")
-
-    #plot_model(model, show_shapes=False, show_layer_names=False, expand_nested=False, to_file="model5.png")
-
-    #plot_model(model, show_shapes=False, show_layer_names=False, expand_nested=True, to_file="model6.png")
-    #plot_model(model, show_shapes=False, show_layer_names=True, expand_nested=False, to_file="model7.png")
-    #plot_model(model, show_shapes=True, show_layer_names=False, expand_nested=False, to_file="model8.png")
-
-
-
-    if(pretrained_weights):
+    if (pretrained_weights):
         model.load_weights(pretrained_weights)
 
     return model
-
-from keras import backend as K
-
-def universal_dice_coef_multilabel(numLabels):
-    def dice_coef_multilabel(y_true, y_pred):
-        dice=0
-        for index in range(numLabels):
-            dice += dice_coef(y_true[:,:,:,index], y_pred[:,:,:,index])
-        return dice/numLabels # taking average
-    return dice_coef_multilabel
-
-def universal_dice_coef_loss(numLabels):
-    def dice_coef_loss_multilabel(y_true, y_pred):
-        dice=0
-        for index in range(numLabels):
-            dice += dice_coef(y_true[:,:,:,index], y_pred[:,:,:,index])
-        return 1 - dice/numLabels # taking average
-    return dice_coef_loss_multilabel
-
-def dice_coef(y_true, y_pred):
-    smooth = 0.0001
-    y_true_f = K.flatten(y_true)
-    y_pred_f = K.flatten(y_pred)
-    intersection = K.sum(y_true_f * y_pred_f)
-    return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
-
-def dice_coef_loss(y_true, y_pred):
-    return 1-dice_coef(y_true, y_pred)
