@@ -4,6 +4,11 @@ The architecture was inspired by [U-Net: Convolutional Networks for Biomedical I
 
 ---
 
+Lab work
+
+Modified from zhixuhao version, the current version can be directly deployed locally, debugs the network, etc....
+
+
 ## Overview
 
 ### Data
